@@ -5,7 +5,7 @@ import os
 
 app = Chalice(app_name='hackgt_backend_code')
 
-@app.route('/v1/game/POST/info/{group_id}/{game_info}', methods=['POST'])
+@app.route('/v1/game/POST/info/{group_id}/{game_info}', methods=['GET'])
 def push_game_info(group_id, game_info):
     """
     Push the game info for a group.
@@ -40,7 +40,4 @@ def get_game_info(group_id):
     nodes = map(lambda x: (x[1], int(x[2])), nodes)
     memcache_client = HashClient(nodes)
 
-    return {
-        "game_info" : memcache_client.get(str(group_id)).decode("utf-8"),
-        "status" : "success"
-    }
+    return memcache_client.get(str(group_id)).decode("utf-8")
